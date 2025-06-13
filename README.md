@@ -31,7 +31,7 @@
 ```bash
 # Clone the repository
 git clone https://github.com/dtlo387/FlipField-Analysis.git
-cd FlipField-Analysis
+cd FlipField-Analysis/src
 
 # Install dependencies
 pip install -r requirements.txt
