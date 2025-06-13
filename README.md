@@ -30,7 +30,7 @@
 ### **Installation**
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/FlipField-Analysis.git
+git clone https://github.com/dtlo387/FlipField-Analysis.git
 cd FlipField-Analysis
 
 # Install dependencies
