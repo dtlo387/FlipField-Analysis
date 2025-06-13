@@ -32,6 +32,11 @@ from datetime import datetime
 # Import our analysis functions
 from AnalyzingFlipField_Clean import *
 
+# Get the project root directory (parent of src)
+import os
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+EXAMPLES_DIR = os.path.join(PROJECT_ROOT, 'examples')
+
 class FlipFieldGUI:
     """Main GUI application for bead flip detection analysis."""
     

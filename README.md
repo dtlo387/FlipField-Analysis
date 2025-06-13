@@ -121,13 +121,16 @@ FlipField-Analysis/
 ├── README.md                    # This file
 ├── requirements.txt             # Python dependencies
 ├── .gitignore                  # Git ignore patterns
-├── FlipFieldGUI.py             # Main GUI application
-├── AnalyzingFlipField_Clean.py # Core analysis engine
-├── launch_gui.py               # Smart launcher script
-├── docs/
-│   ├── README_GUI.md           # Detailed GUI user guide
-│   └── GUI_FEATURES_SUMMARY.md # Complete feature overview
-└── Movie_2601.aviNB2.txt       # Sample tracking data
+├── launch_gui.py               # Top-level launcher script
+├── src/                        # Source code directory
+│   ├── FlipFieldGUI.py         # Main GUI application
+│   ├── AnalyzingFlipField_Clean.py # Core analysis engine
+│   └── launch_gui.py           # Main launcher with dependency checking
+├── examples/                   # Sample data and examples
+│   └── Movie_2601.aviNB2.txt   # Sample tracking data
+└── docs/                       # Documentation
+    ├── README_GUI.md           # Detailed GUI user guide
+    └── GUI_FEATURES_SUMMARY.md # Complete feature overview
 ```
 
 ## 🤝 **Contributing**
