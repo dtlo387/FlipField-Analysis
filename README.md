@@ -96,12 +96,6 @@ Frame   X Position (px)   Y Position (px)   Angle (deg)
 - **75 total frames marked** as legitimate flip events
 - **100% success rate** achieved on validation data
 
-### **Scientific Rigor**
-- Maintains complete flip duration information
-- Eliminates noise while preserving edge cases
-- Recovers missed detections through intelligent pairing
-- Provides comprehensive statistical validation
-
 ##  **Repository Structure**
 
 ```
