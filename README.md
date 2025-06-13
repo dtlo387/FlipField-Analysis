@@ -14,18 +14,18 @@
 - **Interactive parameter tuning** for different experimental setups
 - **Timeline visualizations** with matplotlib integration
 
-###  **Advanced Analysis Pipeline**
+### **Advanced Analysis Pipeline**
 - **4-Stage Detection**: Raw detection → Grouping → Exclusive pairing → Export
 - **False Positive Elimination**: Sophisticated filtering maintains scientific accuracy
 - **Comprehensive Statistics**: Detailed breakdown of all analysis steps
 
-###  **Comprehensive Export System**
+### **Comprehensive Export System**
 - **CSV Data**: Complete tracking data with flip annotations
 - **Field Categorization**: Mapping of magnetic field strengths to flip events
 - **Analysis Reports**: Full statistical summaries with parameters
 - **High-res Plots**: Publication-ready timeline visualizations (300 DPI)
 
-##  **Quick Start**
+## **Quick Start**
 
 ### **Installation**
 ```bash
@@ -46,11 +46,11 @@ The repository includes sample data (`Movie_2601.aviNB2.txt`) for immediate test
 1. **Launch GUI**: Run `python3 launch_gui.py`
 2. **Load Sample**: Browse and select the included sample file
 3. **Configure**: Adjust parameters for your analysis needs
-4. **Analyze**: Click "🔍 Analyze Flips" and monitor real-time progress
+4. **Analyze**: Click "Analyze Flips" and monitor real-time progress
 5. **Explore**: Review results across multiple visualization tabs
 6. **Export**: Generate publication-ready reports and data
 
-##  **Usage**
+## **Usage**
 
 ### **Input Data Format**
 ```
@@ -69,12 +69,12 @@ Frame   X Position (px)   Y Position (px)   Angle (deg)
 | Pair Spacing | 40-50 frames | Biological constraint window |
 
 ### **Quality Assessment**
-- **🏆 PERFECT**: ≥90% success rate
-- **⭐ EXCELLENT**: 70-89% success rate  
-- **✅ GOOD**: 50-69% success rate
-- **⚠️ NEEDS IMPROVEMENT**: <50% success rate
+- **PERFECT**: ≥90% success rate
+- **EXCELLENT**: 70-89% success rate  
+- **GOOD**: 50-69% success rate
+- **NEEDS IMPROVEMENT**: <50% success rate
 
-## 🛠️ **Development**
+## **Development**
 
 ### **Architecture**
 - **Core Analysis**: `AnalyzingFlipField_Clean.py` - Scientific analysis engine
@@ -88,7 +88,7 @@ Frame   X Position (px)   Y Position (px)   Angle (deg)
 - **pandas ≥1.3.0**: Data manipulation and analysis
 - **numpy ≥1.20.0**: Numerical computing foundation
 
-##  **Results & Validation**
+## **Results & Validation**
 
 ### **Example Analysis Results**
 - **10 flip pairs detected** with perfect 40-50 frame biological spacing
@@ -96,7 +96,7 @@ Frame   X Position (px)   Y Position (px)   Angle (deg)
 - **75 total frames marked** as legitimate flip events
 - **100% success rate** achieved on validation data
 
-##  **Repository Structure**
+## **Repository Structure**
 
 ```
 FlipField-Analysis/
@@ -118,7 +118,6 @@ FlipField-Analysis/
 ## **License**
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 
 ## **Support**
 
