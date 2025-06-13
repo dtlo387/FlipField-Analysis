@@ -1,4 +1,4 @@
-# 🧬 **Bead Flip Detection System**
+# **Bead Flip Detection System**
 
 [![Python](https://img.shields.io/badge/Python-3.7+-blue.svg)](https://www.python.org/downloads/)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](https://github.com/yourusername/FlipField-Analysis)
@@ -7,37 +7,25 @@
 
 > **Advanced desktop application for analyzing bead flip events from video tracking data with real-time progress monitoring and interactive visualization.**
 
-## 🎯 **Overview**
+## **Key Features**
 
-This system detects legitimate bead flip events from microscopy video tracking data through a sophisticated 4-stage analysis pipeline. Originally developed for magnetic bead experiments, it eliminates false positives while preserving complete flip event information using biologically-informed constraints.
-
-### 🔬 **Scientific Applications**
-- **Magnetic Bead Analysis**: Detect field-strength-dependent flip behaviors
-- **Microscopy Data Processing**: Automated analysis of particle tracking experiments  
-- **Biological Constraint Modeling**: Uses experimentally-derived spacing patterns (40-50 frames)
-- **Quality Assessment**: Automated scoring with scientific rigor
-
-## ✨ **Key Features**
-
-### 🎨 **Professional Desktop GUI**
 - **Cross-platform compatibility** (Windows, macOS, Linux)
 - **Real-time analysis progress** with threaded processing
 - **Interactive parameter tuning** for different experimental setups
-- **Beautiful timeline visualizations** with matplotlib integration
+- **Timeline visualizations** with matplotlib integration
 
-### 📊 **Advanced Analysis Pipeline**
+###  **Advanced Analysis Pipeline**
 - **4-Stage Detection**: Raw detection → Grouping → Exclusive pairing → Export
 - **False Positive Elimination**: Sophisticated filtering maintains scientific accuracy
-- **Biological Constraints**: Uses real experimental knowledge for validation
 - **Comprehensive Statistics**: Detailed breakdown of all analysis steps
 
-### 💾 **Comprehensive Export System**
+###  **Comprehensive Export System**
 - **CSV Data**: Complete tracking data with flip annotations
 - **Field Categorization**: Mapping of magnetic field strengths to flip events
 - **Analysis Reports**: Full statistical summaries with parameters
 - **High-res Plots**: Publication-ready timeline visualizations (300 DPI)
 
-## 🚀 **Quick Start**
+##  **Quick Start**
 
 ### **Installation**
 ```bash
@@ -62,7 +50,7 @@ The repository includes sample data (`Movie_2601.aviNB2.txt`) for immediate test
 5. **Explore**: Review results across multiple visualization tabs
 6. **Export**: Generate publication-ready reports and data
 
-## 📖 **Usage**
+##  **Usage**
 
 ### **Input Data Format**
 ```
@@ -100,7 +88,7 @@ Frame   X Position (px)   Y Position (px)   Angle (deg)
 - **pandas ≥1.3.0**: Data manipulation and analysis
 - **numpy ≥1.20.0**: Numerical computing foundation
 
-## 📊 **Results & Validation**
+##  **Results & Validation**
 
 ### **Example Analysis Results**
 - **10 flip pairs detected** with perfect 40-50 frame biological spacing
@@ -108,13 +96,7 @@ Frame   X Position (px)   Y Position (px)   Angle (deg)
 - **75 total frames marked** as legitimate flip events
 - **100% success rate** achieved on validation data
 
-### **Scientific Rigor**
-- Maintains complete flip duration information
-- Eliminates noise while preserving edge cases
-- Recovers missed detections through intelligent pairing
-- Provides comprehensive statistical validation
-
-## 📁 **Repository Structure**
+##  **Repository Structure**
 
 ```
 FlipField-Analysis/
@@ -133,32 +115,13 @@ FlipField-Analysis/
     └── GUI_FEATURES_SUMMARY.md # Complete feature overview
 ```
 
-## 🤝 **Contributing**
-
-We welcome contributions! Whether you're interested in:
-- **Scientific Applications**: New analysis methods or biological constraints
-- **GUI Enhancements**: User interface improvements or new visualizations
-- **Cross-platform Support**: Testing and optimization for different systems
-- **Documentation**: Tutorials, examples, or technical documentation
-
-Please feel free to submit issues, feature requests, or pull requests.
-
-## 📜 **License**
+## **License**
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 **Acknowledgments**
 
-- Developed for advanced microscopy analysis applications
-- Built with focus on scientific rigor and user accessibility
-- Designed for cross-platform compatibility and ease of use
-
-## 📞 **Support**
+## **Support**
 
 - **Documentation**: Check the comprehensive [GUI Guide](docs/README_GUI.md)
 - **Issues**: Use GitHub Issues for bug reports and feature requests
 - **Discussions**: GitHub Discussions for general questions and usage tips
-
----
-
-*Transform your bead tracking data into meaningful scientific insights with professional-grade analysis tools.* 
