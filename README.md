@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![GUI](https://img.shields.io/badge/GUI-tkinter%20%7C%20matplotlib-orange.svg)](FlipFieldGUI.py)
 
-> **Advanced desktop application for analyzing bead flip events from video tracking data with real-time progress monitoring and interactive visualization.**
+> **Application that analyzes the Flip Field for MyOne Dynabeads.**
 
 ## **Key Features**
 
