@@ -83,9 +83,9 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          windows-latest-*/FlipField_Analysis_Windows.exe
-          macos-latest-*/FlipField_Analysis_macOS.app
-          */DISTRIBUTION_README.md
+          **/FlipField_Analysis_Windows.exe
+          **/FlipField_Analysis_macOS.app
+          **/DISTRIBUTION_README.md
         body: |
           ## FlipField Analysis - Cross-Platform Executables
           
