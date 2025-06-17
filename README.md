@@ -7,24 +7,6 @@
 
 > **Application that analyzes the Flip Field for MyOne Dynabeads.**
 
-## **Key Features**
-
-- **Cross-platform compatibility** (Windows, macOS, Linux)
-- **Real-time analysis progress** with threaded processing
-- **Interactive parameter tuning** for different experimental setups
-- **Timeline visualizations** with matplotlib integration
-
-### **Advanced Analysis Pipeline**
-- **4-Stage Detection**: Raw detection → Grouping → Exclusive pairing → Export
-- **False Positive Elimination**: Sophisticated filtering maintains scientific accuracy
-- **Comprehensive Statistics**: Detailed breakdown of all analysis steps
-
-### **Comprehensive Export System**
-- **CSV Data**: Complete tracking data with flip annotations
-- **Field Categorization**: Mapping of magnetic field strengths to flip events
-- **Analysis Reports**: Full statistical summaries with parameters
-- **High-res Plots**: Publication-ready timeline visualizations (300 DPI)
-
 ## **Quick Start**
 
 ### **Installation**
