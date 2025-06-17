@@ -1,0 +1,144 @@
+name: Build Executables
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            artifact_name: FlipField_Analysis_Linux
+            asset_name: FlipField_Analysis_Linux
+          - os: windows-latest
+            artifact_name: FlipField_Analysis_Windows.exe
+            asset_name: FlipField_Analysis_Windows.exe
+          - os: macos-latest
+            artifact_name: FlipField_Analysis_macOS.app
+            asset_name: FlipField_Analysis_macOS.app
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pyinstaller
+
+    - name: Build executable (Ubuntu)
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        pyinstaller --onefile --windowed --name=FlipField_Analysis --icon=src/flip612x612.png src/FlipFieldGUI.py
+        chmod +x dist/FlipField_Analysis
+
+    - name: Build executable (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        pyinstaller --onefile --windowed --name=FlipField_Analysis --icon=src/flip612x612.png src/FlipFieldGUI.py
+
+    - name: Build executable (macOS)
+      if: matrix.os == 'macos-latest'
+      run: |
+        pyinstaller --onefile --windowed --name=FlipField_Analysis --target-arch=universal2 --icon=src/flip612x612.png src/FlipFieldGUI.py
+
+    - name: Prepare artifacts (Ubuntu)
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        cp dist/FlipField_Analysis FlipField_Analysis_Linux
+        cp DISTRIBUTION_README.md dist/
+
+    - name: Prepare artifacts (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        copy dist\FlipField_Analysis.exe FlipField_Analysis_Windows.exe
+        copy DISTRIBUTION_README.md dist\
+
+    - name: Prepare artifacts (macOS)
+      if: matrix.os == 'macos-latest'
+      run: |
+        cp -r dist/FlipField_Analysis.app FlipField_Analysis_macOS.app
+        cp DISTRIBUTION_README.md dist/
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ matrix.artifact_name }}
+        path: |
+          ${{ matrix.artifact_name }}
+          DISTRIBUTION_README.md
+
+    - name: Create Release Assets (on tag)
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: actions/upload-artifact@v3
+      with:
+        name: release-assets
+        path: |
+          ${{ matrix.artifact_name }}
+          DISTRIBUTION_README.md
+
+  create-release:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Download all artifacts
+      uses: actions/download-artifact@v3
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          FlipField_Analysis_Linux/FlipField_Analysis_Linux
+          FlipField_Analysis_Windows.exe/FlipField_Analysis_Windows.exe
+          FlipField_Analysis_macOS.app/FlipField_Analysis_macOS.app
+          */DISTRIBUTION_README.md
+        body: |
+          ## FlipField Analysis - Cross-Platform Executables
+          
+          Download the appropriate version for your operating system:
+          
+          ### 🐧 Linux
+          - Download: `FlipField_Analysis_Linux`
+          - Make executable: `chmod +x FlipField_Analysis_Linux`
+          - Run: `./FlipField_Analysis_Linux`
+          
+          ### 🪟 Windows
+          - Download: `FlipField_Analysis_Windows.exe`
+          - Double-click to run
+          - Windows Defender warning: Click "More info" → "Run anyway"
+          
+          ### 🍎 macOS
+          - Download: `FlipField_Analysis_macOS.app`
+          - Double-click to run
+          - Security warning: System Preferences → Security & Privacy → "Open Anyway"
+          
+          ### 📖 User Guide
+          - See `DISTRIBUTION_README.md` for detailed instructions
+          - No Python installation required
+          - Supports all standard bead tracking data formats
+          
+          ---
+          Built automatically with GitHub Actions for maximum compatibility.
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
