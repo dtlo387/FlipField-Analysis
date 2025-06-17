@@ -7,43 +7,27 @@
 
 > **Application that analyzes the Flip Field for MyOne Dynabeads.**
 
-## **Key Features**
-
-- **Cross-platform compatibility** (Windows, macOS, Linux)
-- **Real-time analysis progress** with threaded processing
-- **Interactive parameter tuning** for different experimental setups
-- **Timeline visualizations** with matplotlib integration
-
-### **Advanced Analysis Pipeline**
-- **4-Stage Detection**: Raw detection → Grouping → Exclusive pairing → Export
-- **False Positive Elimination**: Sophisticated filtering maintains scientific accuracy
-- **Comprehensive Statistics**: Detailed breakdown of all analysis steps
-
-### **Comprehensive Export System**
-- **CSV Data**: Complete tracking data with flip annotations
-- **Field Categorization**: Mapping of magnetic field strengths to flip events
-- **Analysis Reports**: Full statistical summaries with parameters
-- **High-res Plots**: Publication-ready timeline visualizations (300 DPI)
-
 ## **Quick Start**
 
 ### **Installation**
 ```bash
 # Clone the repository
 git clone https://github.com/dtlo387/FlipField-Analysis.git
-cd FlipField-Analysis/src
 
 # Install dependencies
 pip install -r requirements.txt
 
+# Change the directory to the /src
+cd FlipField-Analysis/src
+
 # Launch the application
-python3 launch_gui.py
+python3 FlipFieldGUI.py
 ```
 
 ### **Sample Analysis**
 The repository includes sample data (`Movie_2601.aviNB2.txt`) for immediate testing:
 
-1. **Launch GUI**: Run `python3 launch_gui.py`
+1. **Launch GUI**: Run `python3 FlipFieldGUI.py`
 2. **Load Sample**: Browse and select the included sample file
 3. **Configure**: Adjust parameters for your analysis needs
 4. **Analyze**: Click "Analyze Flips" and monitor real-time progress
@@ -74,13 +58,6 @@ Frame   X Position (px)   Y Position (px)   Angle (deg)
 - **GOOD**: 50-69% success rate
 - **NEEDS IMPROVEMENT**: <50% success rate
 
-## **Development**
-
-### **Architecture**
-- **Core Analysis**: `AnalyzingFlipField_Clean.py` - Scientific analysis engine
-- **GUI Application**: `FlipFieldGUI.py` - Desktop interface with real-time features
-- **Smart Launcher**: `launch_gui.py` - Dependency validation and error handling
-
 ### **Dependencies**
 - **Python 3.7+**: Core runtime environment
 - **tkinter**: Cross-platform GUI framework (usually included with Python)
@@ -100,14 +77,12 @@ Frame   X Position (px)   Y Position (px)   Angle (deg)
 
 ```
 FlipField-Analysis/
-├── README.md                    # This file
-├── requirements.txt             # Python dependencies
+├── README.md                   # This file
+├── requirements.txt            # Python dependencies
 ├── .gitignore                  # Git ignore patterns
-├── launch_gui.py               # Top-level launcher script
 ├── src/                        # Source code directory
 │   ├── FlipFieldGUI.py         # Main GUI application
-│   ├── AnalyzingFlipField_Clean.py # Core analysis engine
-│   └── launch_gui.py           # Main launcher with dependency checking
+│   ├── AnalyzingFlipField_GUI  # Core analysis engine
 ├── examples/                   # Sample data and examples
 │   └── Movie_2601.aviNB2.txt   # Sample tracking data
 └── docs/                       # Documentation
