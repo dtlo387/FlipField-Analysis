@@ -63,16 +63,7 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ matrix.artifact_name }}-${{ github.run_id }}
-        path: |
-          ${{ matrix.artifact_name }}
-          DISTRIBUTION_README.md
-
-    - name: Create Release Assets (on tag)
-      if: startsWith(github.ref, 'refs/tags/')
-      uses: actions/upload-artifact@v4
-      with:
-        name: release-assets-${{ github.run_id }}
+        name: ${{ matrix.os }}-${{ github.run_id }}-${{ github.sha }}
         path: |
           ${{ matrix.artifact_name }}
           DISTRIBUTION_README.md
@@ -92,10 +83,10 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          FlipField_Analysis_Windows.exe/FlipField_Analysis_Windows.exe
-          FlipField_Analysis_macOS.app/FlipField_Analysis_macOS.app
+          windows-latest-*/FlipField_Analysis_Windows.exe
+          macos-latest-*/FlipField_Analysis_macOS.app
           */DISTRIBUTION_README.md
-                  body: |
+        body: |
           ## FlipField Analysis - Cross-Platform Executables
           
           Download the appropriate version for your operating system:
