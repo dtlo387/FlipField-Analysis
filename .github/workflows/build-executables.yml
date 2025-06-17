@@ -14,11 +14,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [windows-latest, macos-latest]
         include:
-          - os: ubuntu-latest
-            artifact_name: FlipField_Analysis_Linux
-            asset_name: FlipField_Analysis_Linux
           - os: windows-latest
             artifact_name: FlipField_Analysis_Windows.exe
             asset_name: FlipField_Analysis_Windows.exe
@@ -41,12 +38,6 @@ jobs:
         pip install -r requirements.txt
         pip install pyinstaller
 
-    - name: Build executable (Ubuntu)
-      if: matrix.os == 'ubuntu-latest'
-      run: |
-        pyinstaller --onefile --windowed --name=FlipField_Analysis --icon=src/flip612x612.png src/FlipFieldGUI.py
-        chmod +x dist/FlipField_Analysis
-
     - name: Build executable (Windows)
       if: matrix.os == 'windows-latest'
       run: |
@@ -56,12 +47,6 @@ jobs:
       if: matrix.os == 'macos-latest'
       run: |
         pyinstaller --onefile --windowed --name=FlipField_Analysis --icon=src/flip612x612.png src/FlipFieldGUI.py
-
-    - name: Prepare artifacts (Ubuntu)
-      if: matrix.os == 'ubuntu-latest'
-      run: |
-        cp dist/FlipField_Analysis FlipField_Analysis_Linux
-        cp DISTRIBUTION_README.md dist/
 
     - name: Prepare artifacts (Windows)
       if: matrix.os == 'windows-latest'
@@ -107,19 +92,13 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          FlipField_Analysis_Linux/FlipField_Analysis_Linux
           FlipField_Analysis_Windows.exe/FlipField_Analysis_Windows.exe
           FlipField_Analysis_macOS.app/FlipField_Analysis_macOS.app
           */DISTRIBUTION_README.md
-        body: |
+                  body: |
           ## FlipField Analysis - Cross-Platform Executables
           
           Download the appropriate version for your operating system:
-          
-          ### 🐧 Linux
-          - Download: `FlipField_Analysis_Linux`
-          - Make executable: `chmod +x FlipField_Analysis_Linux`
-          - Run: `./FlipField_Analysis_Linux`
           
           ### 🪟 Windows
           - Download: `FlipField_Analysis_Windows.exe`
@@ -137,7 +116,7 @@ jobs:
           - Supports all standard bead tracking data formats
           
           ---
-          Built automatically with GitHub Actions for maximum compatibility.
+          Built automatically with GitHub Actions for Windows and macOS.
         draft: false
         prerelease: false
       env:
