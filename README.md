@@ -14,7 +14,6 @@
 # Clone the repository
 git clone https://github.com/dtlo387/FlipField-Analysis.git
 
-
 # Install dependencies
 pip install -r requirements.txt
 
