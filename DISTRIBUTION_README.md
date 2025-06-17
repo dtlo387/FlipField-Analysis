@@ -5,18 +5,13 @@ FlipField Analysis is a standalone application for analyzing bead flip detection
 
 ## System Requirements
 
-### 🍎 macOS
+### macOS
 - macOS 10.13 (High Sierra) or later
 - Intel or Apple Silicon Mac
 - ~100MB free disk space
 
-### 🪟 Windows
+### Windows
 - Windows 7/8/10/11 (64-bit)
-- ~80MB free disk space
-
-### 🐧 Linux
-- Most modern Linux distributions
-- glibc 2.17 or later
 - ~80MB free disk space
 
 ## Installation
@@ -36,10 +31,6 @@ FlipField Analysis is a standalone application for analyzing bead flip detection
 4. If Windows Defender shows a warning:
    - Click "More info" then "Run anyway"
 
-### Linux
-1. Download `FlipField_Analysis`
-2. Make executable: `chmod +x FlipField_Analysis`
-3. Run: `./FlipField_Analysis`
 
 ## Usage
 
@@ -75,7 +66,6 @@ The analysis creates several files:
 ### Application Won't Start
 - **macOS**: Check security settings, try right-click → Open
 - **Windows**: Check Windows Defender, add exception if needed
-- **Linux**: Ensure file has execute permissions
 
 ### Analysis Errors
 - Verify input file format (tab-separated values)
