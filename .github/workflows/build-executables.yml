@@ -55,7 +55,7 @@ jobs:
     - name: Build executable (macOS)
       if: matrix.os == 'macos-latest'
       run: |
-        pyinstaller --onefile --windowed --name=FlipField_Analysis --target-arch=universal2 --icon=src/flip612x612.png src/FlipFieldGUI.py
+        pyinstaller --onefile --windowed --name=FlipField_Analysis --icon=src/flip612x612.png src/FlipFieldGUI.py
 
     - name: Prepare artifacts (Ubuntu)
       if: matrix.os == 'ubuntu-latest'
