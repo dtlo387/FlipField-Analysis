@@ -1,5 +1,5 @@
 """
-🧬 BEAD FLIP DETECTION SYSTEM - GUI Compatible Version
+BEAD FLIP DETECTION SYSTEM - GUI Compatible Version
 ======================================================
 
 Modified version of AnalyzingFlipField_Clean.py that can be called from the GUI
