@@ -1,10 +1,5 @@
 # **Bead Flip Detection System**
 
-[![Python](https://img.shields.io/badge/Python-3.7+-blue.svg)](https://www.python.org/downloads/)
-[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](https://github.com/yourusername/FlipField-Analysis)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![GUI](https://img.shields.io/badge/GUI-tkinter%20%7C%20matplotlib-orange.svg)](FlipFieldGUI.py)
-
 > **Application that analyzes the Flip Field for MyOne Dynabeads.**
 
 ## **Quick Start**
