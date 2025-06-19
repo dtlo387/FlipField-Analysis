@@ -1,8 +1,17 @@
-# **Bead Flip Detection System**
+# **Flip Field Analysis**
 
 > **Application that analyzes the Flip Field for MyOne Dynabeads.**
 
-## **Quick Start**
+This program takes the output text files from [@benonymity's Dynabeads Tracking Program](https://github.com/benonymity/dynabeads) and identifies when a bead flips based on pixel distance, speed calculations, and pattern recognition. The program will also provide a confidence rating based on the parameters mentioned above.
+
+## Usage
+
+You can download the latest executable for your OS from [releases](https://github.com/dtlo387/FlipField-Analysis/releases). Please note that the startup times can be ... less than ideal due to it running on Python. Just give it some patience. Once it finishes initializing, you should see a simple and self-explanatory GUI. 
+
+If you need further help, download the DISTRIBUTION_README.md under [releases](https://github.com/dtlo387/FlipField-Analysis/releases). 
+
+## Develop
+If you're having trouble downloading the executable or you just want to play with the source code, you can run the script in your own Python environment.
 
 ### **Installation**
 ```bash
@@ -19,78 +28,6 @@ cd FlipField-Analysis/src
 python3 FlipFieldGUI.py
 ```
 
-### **Sample Analysis**
-The repository includes sample data (`Movie_2601.aviNB2.txt`) for immediate testing:
-
-1. **Launch GUI**: Run `python3 FlipFieldGUI.py`
-2. **Load Sample**: Browse and select the included sample file
-3. **Configure**: Adjust parameters for your analysis needs
-4. **Analyze**: Click "Analyze Flips" and monitor real-time progress
-5. **Explore**: Review results across multiple visualization tabs
-6. **Export**: Generate publication-ready reports and data
-
-## **Usage**
-
-### **Input Data Format**
-```
-Frame   X Position (px)   Y Position (px)   Angle (deg)
-1       245.67           189.34            45.2
-2       246.12           189.78            46.1
-...
-```
-
-### **Parameter Guidance**
-| Parameter | Range | Description |
-|-----------|-------|-------------|
-| Video Duration | 0.5-5.0 min | Total recording length |
-| Analysis Start | 50-100 frames | Skip initial stabilization |
-| Min Position Change | 1-5 px | Detection sensitivity |
-| Pair Spacing | 40-50 frames | Biological constraint window |
-
-### **Quality Assessment**
-- **PERFECT**: ≥90% success rate
-- **EXCELLENT**: 70-89% success rate  
-- **GOOD**: 50-69% success rate
-- **NEEDS IMPROVEMENT**: <50% success rate
-
-### **Dependencies**
-- **Python 3.7+**: Core runtime environment
-- **tkinter**: Cross-platform GUI framework (usually included with Python)
-- **matplotlib ≥3.5.0**: Scientific plotting and visualization
-- **pandas ≥1.3.0**: Data manipulation and analysis
-- **numpy ≥1.20.0**: Numerical computing foundation
-
-## **Results & Validation**
-
-### **Example Analysis Results**
-- **10 flip pairs detected** with perfect 40-50 frame biological spacing
-- **4 false positives eliminated** through exclusive pairing logic
-- **75 total frames marked** as legitimate flip events
-- **100% success rate** achieved on validation data
-
-## **Repository Structure**
-
-```
-FlipField-Analysis/
-├── README.md                   # This file
-├── requirements.txt            # Python dependencies
-├── .gitignore                  # Git ignore patterns
-├── src/                        # Source code directory
-│   ├── FlipFieldGUI.py         # Main GUI application
-│   ├── AnalyzingFlipField_GUI  # Core analysis engine
-├── examples/                   # Sample data and examples
-│   └── Movie_2601.aviNB2.txt   # Sample tracking data
-└── docs/                       # Documentation
-    ├── README_GUI.md           # Detailed GUI user guide
-    └── GUI_FEATURES_SUMMARY.md # Complete feature overview
-```
-
 ## **License**
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## **Support**
-
-- **Documentation**: Check the comprehensive [GUI Guide](docs/README_GUI.md)
-- **Issues**: Use GitHub Issues for bug reports and feature requests
-- **Discussions**: GitHub Discussions for general questions and usage tips
