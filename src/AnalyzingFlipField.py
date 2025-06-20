@@ -2,9 +2,6 @@
 BEAD FLIP DETECTION SYSTEM - GUI Compatible Version
 ======================================================
 
-Modified version of AnalyzingFlipField_Clean.py that can be called from the GUI
-with custom parameters.
-
 Author: Daniel Lo
 Date: 2025
 """
@@ -769,6 +766,8 @@ class FlipFieldAnalyzer:
 
 
 def run_gui_analysis(file_path, video_duration_min=2.8833333333, 
+                    frame_analysis_start_seconds=None, frame_analysis_end_seconds=None,
+                    min_position_change=2,
                     export_txt=True, export_csv=True, export_debug=False,
                     export_summary=True, output_dir=None):
     """
@@ -777,6 +776,9 @@ def run_gui_analysis(file_path, video_duration_min=2.8833333333,
     Args:
         file_path (str): Path to the input file
         video_duration_min (float): Video duration in minutes
+        frame_analysis_start_seconds (float): Seconds to skip at start (converted to frames)
+        frame_analysis_end_seconds (float): Seconds to skip at end (converted to frames)
+        min_position_change (float): Minimum pixel movement to detect flip
         export_txt (bool): Export TXT file
         export_csv (bool): Export CSV file
         export_debug (bool): Export debug file
@@ -786,9 +788,31 @@ def run_gui_analysis(file_path, video_duration_min=2.8833333333,
     Returns:
         dict: Analysis results
     """
+    # Calculate frame rate first to convert seconds to frames
+    # Load data temporarily to get frame count
+    column_names = ['Frames', 'X Position (px)', 'Y Position (px)', 'Angle (deg)']
+    temp_df = pd.read_fwf(file_path, skiprows=1, names=column_names)
+    total_frames = len(temp_df)
+    video_duration_sec = video_duration_min * 60
+    frame_rate = total_frames / video_duration_sec
+    
+    # Convert seconds to frames, with defaults
+    if frame_analysis_start_seconds is None:
+        frame_analysis_start = 80  # Default frames
+    else:
+        frame_analysis_start = max(0, int(frame_analysis_start_seconds * frame_rate))
+    
+    if frame_analysis_end_seconds is None:
+        frame_analysis_end = 82  # Default frames
+    else:
+        frame_analysis_end = max(0, int(frame_analysis_end_seconds * frame_rate))
+    
     analyzer = FlipFieldAnalyzer(
         file_path=file_path,
         video_duration_min=video_duration_min,
+        frame_analysis_start=frame_analysis_start,
+        frame_analysis_end=frame_analysis_end,
+        min_position_change=min_position_change,
         output_dir=output_dir
     )
     

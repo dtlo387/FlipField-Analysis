@@ -1,89 +1,17 @@
 #!/usr/bin/env python3
 import tkinter as tk
-from tkinter import filedialog, messagebox
+from tkinter import filedialog, messagebox, ttk
 import threading
 import os
+import json
 
 # Import the analysis module
 try:
-    from AnalyzingFlipField_GUI import run_gui_analysis
+    from AnalyzingFlipField import run_gui_analysis
 except ImportError:
-    print("Warning: AnalyzingFlipField_GUI module not found")
+    print("Warning: AnalyzingFlipField module not found")
     run_gui_analysis = None
 
-
-class SettingsWindow:
-    """Settings popup window for export options."""
-    
-    def __init__(self, parent, settings):
-        self.parent = parent
-        self.settings = settings
-        
-        # Create popup window
-        self.window = tk.Toplevel(parent)
-        self.window.title("Settings")
-        self.window.geometry("300x200")
-        self.window.resizable(False, False)
-        self.window.transient(parent)
-        self.window.grab_set()
-        
-        # Center the popup
-        self.center_window()
-        self.setup_ui()
-    
-    def center_window(self):
-        """Center the settings window."""
-        self.window.update_idletasks()
-        x = (self.window.winfo_screenwidth() // 2) - (300 // 2)
-        y = (self.window.winfo_screenheight() // 2) - (200 // 2)
-        self.window.geometry(f"300x200+{x}+{y}")
-    
-    def setup_ui(self):
-        """Setup settings UI."""
-        main_frame = tk.Frame(self.window)
-        main_frame.pack(fill='both', expand=True, padx=20, pady=20)
-        
-        # Title
-        title = tk.Label(main_frame, text="Export Settings", font=('SF Pro', 14, 'bold'))
-        title.pack(pady=(0, 15))
-        
-        # Export options
-        options_frame = tk.Frame(main_frame)
-        options_frame.pack(fill='x', pady=(0, 20))
-        
-        self.txt_var = tk.BooleanVar(value=self.settings.get('export_txt', True))
-        self.csv_var = tk.BooleanVar(value=self.settings.get('export_csv', True))
-        self.summary_var = tk.BooleanVar(value=self.settings.get('export_summary', True))
-        
-        tk.Checkbutton(options_frame, text="Export TXT file", variable=self.txt_var, 
-                      font=('SF Pro', 12)).pack(anchor='w', pady=2)
-        tk.Checkbutton(options_frame, text="Export CSV file", variable=self.csv_var,
-                      font=('SF Pro', 12)).pack(anchor='w', pady=2)
-        tk.Checkbutton(options_frame, text="Export Flip Summary", variable=self.summary_var,
-                      font=('SF Pro', 12)).pack(anchor='w', pady=2)
-        
-        # Buttons
-        button_frame = tk.Frame(main_frame)
-        button_frame.pack(fill='x')
-        
-        cancel_btn = tk.Button(button_frame, text="Cancel", command=self.cancel,
-                              font=('SF Pro', 11), relief='solid', bd=1)
-        cancel_btn.pack(side='right', padx=(10, 0))
-        
-        save_btn = tk.Button(button_frame, text="Save", command=self.save,
-                            font=('SF Pro', 11), relief='solid', bd=1)
-        save_btn.pack(side='right')
-    
-    def save(self):
-        """Save settings and close."""
-        self.settings['export_txt'] = self.txt_var.get()
-        self.settings['export_csv'] = self.csv_var.get()
-        self.settings['export_summary'] = self.summary_var.get()
-        self.window.destroy()
-    
-    def cancel(self):
-        """Cancel and close."""
-        self.window.destroy()
 
 
 class FlipFieldGUI:
@@ -95,15 +23,43 @@ class FlipFieldGUI:
         self.selected_output_dir = None
         self.is_running = False
         
-        # Settings for export
+        # Settings for export and analysis
         self.settings = {
+            # Export settings
             'export_txt': False,
             'export_csv': False,
-            'export_summary': True
+            'export_summary': True,
+            # Analysis settings
+            'analysis_start_seconds': 3.0,  # Default equivalent to ~80 frames
+            'analysis_end_seconds': 3.0,    # Default equivalent to ~82 frames  
+            'min_movement_pixels': 2.0
         }
+        
+        # Load settings from config file
+        self.load_settings()
         
         self.setup_window()
         self.setup_ui()
+    
+    def load_settings(self):
+        """Load settings from config file if it exists."""
+        config_file = os.path.join(os.path.expanduser("~"), ".flipfield_config.json")
+        try:
+            if os.path.exists(config_file):
+                with open(config_file, 'r') as f:
+                    saved_settings = json.load(f)
+                    self.settings.update(saved_settings)
+        except Exception as e:
+            print(f"Could not load settings: {e}")
+    
+    def save_settings(self):
+        """Save settings to config file."""
+        config_file = os.path.join(os.path.expanduser("~"), ".flipfield_config.json")
+        try:
+            with open(config_file, 'w') as f:
+                json.dump(self.settings, f, indent=2)
+        except Exception as e:
+            print(f"Could not save settings: {e}")
     
     def setup_window(self):
         """Configure the main window."""
@@ -243,51 +199,120 @@ class FlipFieldGUI:
             self.output_path_label.configure(text=display_path, fg='black')
     
     def open_settings(self):
-        """Open the settings window."""
+        """Open the unified settings window with export and analysis options."""
         if hasattr(self, 'settings_window') and self.settings_window.winfo_exists():
             self.settings_window.lift()
             return
             
         self.settings_window = tk.Toplevel(self.root)
-        self.settings_window.title("Analysis Settings")
-        self.settings_window.geometry("400x300")
+        self.settings_window.title("FlipField Settings")
+        self.settings_window.geometry("500x500")
         self.settings_window.resizable(False, False)
         
         # Make it modal
         self.settings_window.transient(self.root)
         self.settings_window.grab_set()
         
+        # Center the window
+        self.center_settings_window()
+        
         main_frame = tk.Frame(self.settings_window)
         main_frame.pack(fill='both', expand=True, padx=20, pady=20)
         
         # Title
-        title_label = tk.Label(main_frame, text="Export Options", 
-                              font=('SF Pro', 14, 'bold'))
+        title_label = tk.Label(main_frame, text="FlipField Settings", 
+                              font=('SF Pro', 16, 'bold'))
         title_label.pack(pady=(0, 20))
         
-        # Export options
-        export_frame = tk.Frame(main_frame)
-        export_frame.pack(fill='x', pady=(0, 20))
+        # Export Options Section
+        export_section = tk.LabelFrame(main_frame, text="Export Options", 
+                                     font=('SF Pro', 12, 'bold'), padx=10, pady=10)
+        export_section.pack(fill='x', pady=(0, 15))
         
-        self.export_csv_var = tk.BooleanVar(value=False)
-        csv_check = tk.Checkbutton(export_frame, text="Export CSV files", 
+        self.export_csv_var = tk.BooleanVar(value=self.settings['export_csv'])
+        csv_check = tk.Checkbutton(export_section, text="Export CSV files", 
                                   variable=self.export_csv_var,
-                                  font=('SF Pro', 12))
+                                  font=('SF Pro', 11))
         csv_check.pack(anchor='w', pady=2)
         
-        self.export_txt_var = tk.BooleanVar(value=False)
-        txt_check = tk.Checkbutton(export_frame, text="Export TXT files", 
+        self.export_txt_var = tk.BooleanVar(value=self.settings['export_txt'])
+        txt_check = tk.Checkbutton(export_section, text="Export TXT files", 
                                   variable=self.export_txt_var,
-                                  font=('SF Pro', 12))
+                                  font=('SF Pro', 11))
         txt_check.pack(anchor='w', pady=2)
         
-        self.export_summary_var = tk.BooleanVar(value=True)
-        summary_check = tk.Checkbutton(export_frame, text="Export Flip Summary", 
+        self.export_summary_var = tk.BooleanVar(value=self.settings['export_summary'])
+        summary_check = tk.Checkbutton(export_section, text="Export Flip Summary", 
                                       variable=self.export_summary_var,
-                                      font=('SF Pro', 12))
+                                      font=('SF Pro', 11))
         summary_check.pack(anchor='w', pady=2)
         
-        # Buttons
+        # Advanced Analysis Section
+        analysis_section = tk.LabelFrame(main_frame, text="Advanced Analysis Parameters", 
+                                       font=('SF Pro', 12, 'bold'), padx=10, pady=10)
+        analysis_section.pack(fill='x', pady=(0, 15))
+        
+        # Start skip time
+        start_frame = tk.Frame(analysis_section)
+        start_frame.pack(fill='x', pady=5)
+        
+        tk.Label(start_frame, text="Skip at start (seconds):", 
+                font=('SF Pro', 11)).pack(side='left')
+        
+        # Create tooltip for start skip
+        start_help = tk.Label(start_frame, text="ⓘ", font=('SF Pro', 10), fg='blue', cursor='hand2')
+        start_help.pack(side='right', padx=(5, 0))
+        self.create_tooltip(start_help, "Number of seconds to skip at the beginning of the video to avoid startup artifacts")
+        
+        self.start_seconds_var = tk.DoubleVar(value=self.settings['analysis_start_seconds'])
+        start_spinbox = tk.Spinbox(start_frame, from_=0, to=10, increment=0.5, 
+                                  textvariable=self.start_seconds_var, width=8,
+                                  font=('SF Pro', 11))
+        start_spinbox.pack(side='right', padx=(10, 0))
+        
+        # End skip time
+        end_frame = tk.Frame(analysis_section)
+        end_frame.pack(fill='x', pady=5)
+        
+        tk.Label(end_frame, text="Skip at end (seconds):", 
+                font=('SF Pro', 11)).pack(side='left')
+        
+        end_help = tk.Label(end_frame, text="ⓘ", font=('SF Pro', 10), fg='blue', cursor='hand2')
+        end_help.pack(side='right', padx=(5, 0))
+        self.create_tooltip(end_help, "Number of seconds to skip at the end of the video to avoid ending artifacts")
+        
+        self.end_seconds_var = tk.DoubleVar(value=self.settings['analysis_end_seconds'])
+        end_spinbox = tk.Spinbox(end_frame, from_=0, to=10, increment=0.5,
+                                textvariable=self.end_seconds_var, width=8,
+                                font=('SF Pro', 11))
+        end_spinbox.pack(side='right', padx=(10, 0))
+        
+        # Minimum movement
+        movement_frame = tk.Frame(analysis_section)
+        movement_frame.pack(fill='x', pady=5)
+        
+        tk.Label(movement_frame, text="Minimum Movement (pixels):", 
+                font=('SF Pro', 11)).pack(side='left')
+        
+        movement_help = tk.Label(movement_frame, text="ⓘ", font=('SF Pro', 10), fg='blue', cursor='hand2')
+        movement_help.pack(side='right', padx=(5, 0))
+        self.create_tooltip(movement_help, "Minimum pixel movement required to detect a bead flip. Lower = more sensitive")
+        
+        self.movement_var = tk.DoubleVar(value=self.settings['min_movement_pixels'])
+        movement_entry = tk.Entry(movement_frame, textvariable=self.movement_var, 
+                                 width=8, font=('SF Pro', 11))
+        movement_entry.pack(side='right', padx=(10, 0))
+        
+        # Reset defaults button
+        reset_frame = tk.Frame(analysis_section)
+        reset_frame.pack(fill='x', pady=(10, 0))
+        
+        reset_btn = tk.Button(reset_frame, text="Reset Analysis Defaults", 
+                             command=self.reset_analysis_defaults,
+                             font=('SF Pro', 10))
+        reset_btn.pack(side='right')
+        
+        # Main buttons
         button_frame = tk.Frame(main_frame)
         button_frame.pack(fill='x', pady=(20, 0))
         
@@ -296,17 +321,74 @@ class FlipFieldGUI:
                               font=('SF Pro', 12))
         cancel_btn.pack(side='right', padx=(10, 0))
         
-        ok_btn = tk.Button(button_frame, text="OK", 
-                          command=self.save_settings,
+        ok_btn = tk.Button(button_frame, text="Save", 
+                          command=self.save_all_settings,
                           font=('SF Pro', 12))
         ok_btn.pack(side='right')
     
-    def save_settings(self):
-        """Save settings and close the settings window."""
-        self.settings['export_csv'] = self.export_csv_var.get()
-        self.settings['export_txt'] = self.export_txt_var.get()
-        self.settings['export_summary'] = self.export_summary_var.get()
-        self.settings_window.destroy()
+    def center_settings_window(self):
+        """Center the settings window."""
+        self.settings_window.update_idletasks()
+        x = (self.settings_window.winfo_screenwidth() // 2) - (500 // 2)
+        y = (self.settings_window.winfo_screenheight() // 2) - (500 // 2)
+        self.settings_window.geometry(f"500x500+{x}+{y}")
+    
+    def create_tooltip(self, widget, text):
+        """Create a tooltip for a widget."""
+        def on_enter(event):
+            tooltip = tk.Toplevel()
+            tooltip.wm_overrideredirect(True)
+            tooltip.wm_geometry(f"+{event.x_root+10}+{event.y_root+10}")
+            label = tk.Label(tooltip, text=text, background="lightyellow", 
+                           font=('SF Pro', 9), wraplength=200)
+            label.pack()
+            widget.tooltip = tooltip
+        
+        def on_leave(event):
+            if hasattr(widget, 'tooltip'):
+                widget.tooltip.destroy()
+                del widget.tooltip
+        
+        widget.bind("<Enter>", on_enter)
+        widget.bind("<Leave>", on_leave)
+    
+    def reset_analysis_defaults(self):
+        """Reset analysis parameters to default values."""
+        self.start_seconds_var.set(3.0)
+        self.end_seconds_var.set(3.0)
+        self.movement_var.set(2.0)
+    
+    def save_all_settings(self):
+        """Save all settings and close the settings window."""
+        # Validate inputs
+        try:
+            start_val = self.start_seconds_var.get()
+            end_val = self.end_seconds_var.get()
+            movement_val = self.movement_var.get()
+            
+            # Validation
+            if not (0 <= start_val <= 10):
+                raise ValueError("Start skip time must be between 0-10 seconds")
+            if not (0 <= end_val <= 10):
+                raise ValueError("End skip time must be between 0-10 seconds")
+            if not (0.1 <= movement_val <= 5):
+                raise ValueError("Minimum movement must be between 0.1-5 pixels")
+            
+            # Save settings
+            self.settings['export_csv'] = self.export_csv_var.get()
+            self.settings['export_txt'] = self.export_txt_var.get()
+            self.settings['export_summary'] = self.export_summary_var.get()
+            self.settings['analysis_start_seconds'] = start_val
+            self.settings['analysis_end_seconds'] = end_val
+            self.settings['min_movement_pixels'] = movement_val
+            
+            # Save to config file
+            self.save_settings()
+            
+            self.settings_window.destroy()
+            
+        except ValueError as e:
+            messagebox.showerror("Invalid Input", str(e))
     
     def get_video_length_minutes(self):
         """Convert minutes and seconds to total minutes."""
@@ -353,6 +435,9 @@ class FlipFieldGUI:
             result = run_gui_analysis(
                 file_path=self.selected_input_file,
                 video_duration_min=video_length,
+                frame_analysis_start_seconds=self.settings['analysis_start_seconds'],
+                frame_analysis_end_seconds=self.settings['analysis_end_seconds'],
+                min_position_change=self.settings['min_movement_pixels'],
                 export_txt=self.settings['export_txt'],
                 export_csv=self.settings['export_csv'],
                 export_debug=False,
